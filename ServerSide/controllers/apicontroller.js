@@ -96,5 +96,20 @@ let DeleteData = async (req, res) => {
         res.status(101).json({ message: "unable to delete data !", err })
     }
 }
+const updateData = async (req, res) => {
+    let data = req.body;
+    try {
+        const dataLength = Object.keys(data).length
+        const dataKey = Object.keys(data)
+        const dataValue = Object.values(data)
 
-export { GetHome, PostAcceptForm, FetchData, DeleteData }
+        for (let i = 0; i < dataLength; i++) {
+            await DataModel.updateOne({ _id: data._id }, { $set: { [dataKey[i]]: dataValue[i] } })
+        }
+        res.status(200).json({ message: 'Data updated successfully !' })
+    } catch (err) {
+        res.status(200).json({ message: "Unable to update data !" })
+    }
+}
+
+export { GetHome, PostAcceptForm, FetchData, DeleteData, updateData }
